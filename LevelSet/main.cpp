@@ -2,22 +2,8 @@
 #include <stdio.h>
 #include <vector>
 #include <exception>
+#include "main.h"
 using namespace std;
-
-#define HEIGHT 512
-#define WIDTH 512
-#define BORDER 2
-
-
-double image[HEIGHT][WIDTH] = { 0 };
-double init[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
-double phi[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
-double label[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
-vector<int> lz;
-vector<int> lp1;
-vector<int> ln1;
-vector<int> lp2;
-vector<int> ln2;
 
 
 void fillInit(int minX, int minY, int maxX, int maxY){
@@ -125,16 +111,20 @@ void initialization(){
 
 		}
 	}
-	for (int i = 0; i<lz.size/2; i+=2){
+	for (size_t i = 0; i<lz.size()/2; i+=2){
 		setLevels(lz[i], lz[i+1], 1);	//second levelSet (level 1)
 	}
-	for (int i = 0; i<lp1.size/2; i+=2){
+	for (size_t i = 0; i<lp1.size()/2; i+=2){
 		setLevels(lp1[i], lp1[i+1], 2);	
 	}
-	for (int i = 0; i<ln1.size/2; i+=2){
+	for (size_t i = 0; i<ln1.size()/2; i+=2){
 		setLevels(ln1[i], ln1[i+1], 2);	
 	}
 }
+
+
+
+
 
 
 void readbmp(char* filename){
@@ -168,17 +158,23 @@ void readbmp(char* filename){
 }
 
 int main(){
-try{
-	fillInit(350, 350, 360, 360);
+
+	memset(init, 0, HEIGHT*WIDTH*sizeof(int));
+	memset(phi, 0, HEIGHT*WIDTH*sizeof(double));
+	memset(image, 0, HEIGHT*WIDTH*sizeof(int));
+	memset(label, 0, HEIGHT*WIDTH*sizeof(int));
+
+	try{
+		fillInit(360, 360, 350, 350);
 	
-}catch(int e){
-	if(e == -1){
-		printf("minX er større enn maxX eller minY er større enn maxY");
-		return 0;
-	}
+	}catch(int e){
+		if(e == -1){
+			printf("minX er større enn maxX eller minY er større enn maxY");
+			return 0;
+		}
 	else if(e == 1){
-		printf("masken kan ikke være utenfor eller større enn bildet");
-		return 0;
+			printf("masken kan ikke være utenfor eller større enn bildet");
+			return 0;
 	}
 }
 
