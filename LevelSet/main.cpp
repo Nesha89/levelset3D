@@ -2,15 +2,32 @@
 #include <stdio.h>
 #include <vector>
 #include <exception>
+#include <stdlib.h>
+#include <string.h>
 #include "main.h"
+#include "update.h"
 using namespace std;
+
+double image[HEIGHT][WIDTH] = { 0 };
+double phi[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
+int init[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
+int label[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
+
+double test[3];
+
+
+vector<int> lz;
+vector<int> lp1;
+vector<int> ln1;
+vector<int> lp2;
+vector<int> ln2;
 
 
 void fillInit(int minX, int minY, int maxX, int maxY){
-	if(minX - maxX <= 0){
+	if(maxX - minX <= 0){
 		throw -1;
 	}
-	else if(minY - maxY <= 0){
+	else if(maxY - minY <= 0){
 		throw -1;
 	}
 	else if(minX < 0 || maxX > HEIGHT || minY < 0 || maxY > WIDTH){
@@ -158,25 +175,25 @@ void readbmp(char* filename){
 }
 
 int main(){
+	
+	updateLevelSets();
 
-	memset(init, 0, HEIGHT*WIDTH*sizeof(int));
-	memset(phi, 0, HEIGHT*WIDTH*sizeof(double));
-	memset(image, 0, HEIGHT*WIDTH*sizeof(int));
-	memset(label, 0, HEIGHT*WIDTH*sizeof(int));
-
+	
+	
 	try{
-		fillInit(360, 360, 350, 350);
+		fillInit(350, 350, 360, 360);
 	
 	}catch(int e){
 		if(e == -1){
-			printf("minX er større enn maxX eller minY er større enn maxY");
-			return 0;
+			printf("minX er større enn maxX eller minY er større enn maxY\n");
+			system("pause");
+
 		}
-	else if(e == 1){
-			printf("masken kan ikke være utenfor eller større enn bildet");
-			return 0;
+		else if(e == 1){
+				printf("masken kan ikke være utenfor eller større enn bildet\n");
+				system("pause");
+		}
 	}
-}
 
 
 }
