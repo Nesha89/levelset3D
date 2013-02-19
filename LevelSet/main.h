@@ -6,3 +6,4 @@ using namespace std;
 #define WIDTH 512
 #define BORDER 2
 
+bool checkMaskNeighbours(int i, int j, int id);

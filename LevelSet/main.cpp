@@ -12,9 +12,7 @@ double image[HEIGHT][WIDTH] = { 0 };
 double phi[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
 int init[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
 int label[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
-
-double test[3];
-
+double F[HEIGHT][WIDTH]
 
 vector<int> lz;
 vector<int> lp1;
@@ -22,6 +20,11 @@ vector<int> ln1;
 vector<int> lp2;
 vector<int> ln2;
 
+vector<int> sz;
+vector<int> sp1;
+vector<int> sn1;
+vector<int> sp2;
+vector<int> sn2;
 
 void fillInit(int minX, int minY, int maxX, int maxY){
 	if(maxX - minX <= 0){
@@ -40,15 +43,27 @@ void fillInit(int minX, int minY, int maxX, int maxY){
 	}
 }
 
-bool checkMaskNeighbours(int i, int j){
-	if(init[i+1][j] == 0)
-		return true;
-	else if(init[i-1][j] == 0)
-		return true;
-	else if(init[i][j+1] == 0)
-		return true;
-	else if(init[i][j-1] == 0)
-		return true;
+bool checkMaskNeighbours(int i, int j, int id){
+	if(id == 1){ //id == 1 -> init
+		if(init[i+1][j] == 0)
+			return true;
+		else if(init[i-1][j] == 0)
+			return true;
+		else if(init[i][j+1] == 0)
+			return true;
+		else if(init[i][j-1] == 0)
+			return true;
+	}
+	else if(id == 2){ //id == 1 -> label
+		if(label[i+1][j] == 0)
+			return true;
+		else if(label[i-1][j] == 0)
+			return true;
+		else if(label[i][j+1] == 0)
+			return true;
+		else if(label[i][j-1] == 0)
+			return true;
+	}
 	return false;
 }
 
@@ -120,7 +135,7 @@ void initialization(){
 	}
 	for (int i = 1; i<HEIGHT+1; i++){
 		for (int j = 1; j<WIDTH+1; j++){
-			if(init[i][j] == 1 && checkMaskNeighbours(i,j) == true)
+			if(init[i][j] == 1 && checkMaskNeighbours(i,j,1) == true)
 				lz.push_back(i);		//adder i til vektoren som representerer zero level set
 				lz.push_back(j);		//adder j på samme måte som i. i ligger på partall indekser mens j sitter på oddetall
 				label[i][j] = 0;
@@ -128,13 +143,13 @@ void initialization(){
 
 		}
 	}
-	for (size_t i = 0; i<lz.size()/2; i+=2){
+	for (size_t i = 0; i<lz.size(); i+=2){
 		setLevels(lz[i], lz[i+1], 1);	//second levelSet (level 1)
 	}
-	for (size_t i = 0; i<lp1.size()/2; i+=2){
+	for (size_t i = 0; i<lp1.size(); i+=2){
 		setLevels(lp1[i], lp1[i+1], 2);	
 	}
-	for (size_t i = 0; i<ln1.size()/2; i+=2){
+	for (size_t i = 0; i<ln1.size(); i+=2){
 		setLevels(ln1[i], ln1[i+1], 2);	
 	}
 }
@@ -178,7 +193,6 @@ int main(){
 	
 	updateLevelSets();
 
-	
 	
 	try{
 		fillInit(350, 350, 360, 360);
