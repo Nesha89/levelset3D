@@ -12,18 +12,18 @@ extern double phi[HEIGHT+BORDER][WIDTH+BORDER]; //representation of the zero lev
 extern int label[HEIGHT+BORDER][WIDTH+BORDER];//contains only integer values between -3 and 3
 extern double F[HEIGHT][WIDTH];
 
-extern vector<int> lz; // zero level set
-extern vector<int> lp1;
-extern vector<int> ln1;
-extern vector<int> lp2;
-extern vector<int> ln2;
+extern vector<px> lz; // zero level set
+extern vector<px> lp1;
+extern vector<px> ln1;
+extern vector<px> lp2;
+extern vector<px> ln2;
 
 //temp values
-extern vector<int> sz; //values in sz are to be moved to lz
-extern vector<int> sp1;
-extern vector<int> sn1;
-extern vector<int> sp2;
-extern vector<int> sn2;
+extern vector<px> sz; //values in sz are to be moved to lz
+extern vector<px> sp1;
+extern vector<px> sn1;
+extern vector<px> sp2;
+extern vector<px> sn2;
 
 
 void updateLevelSets(){
