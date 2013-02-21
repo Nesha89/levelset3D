@@ -1,2 +1,0 @@
-void prepareUpdates();
-void updateLevelSets();
