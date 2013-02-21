@@ -8,11 +8,11 @@
 #include "update.h"
 using namespace std;
 
-double image[HEIGHT][WIDTH] = { 0 };
+double image[HEIGHT][WIDTH] = { {0.1,0.2,0.1,0.3,0.4},{0.1,0.2,0.1,0.3,0.4}, {0.1,0.2,0.1,0.3,0.4}, {0.1,0.2,0.1,0.3,0.4}, {0.1,0.2,0.1,0.3,0.4}  };
 double phi[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
 int init[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
 int label[HEIGHT+BORDER][WIDTH+BORDER] = { 0 };
-double F[HEIGHT][WIDTH]
+double F[HEIGHT][WIDTH] = { 0 };
 
 vector<int> lz;
 vector<int> lp1;
@@ -43,25 +43,25 @@ void fillInit(int minX, int minY, int maxX, int maxY){
 	}
 }
 
-bool checkMaskNeighbours(int i, int j, int id){
+bool checkMaskNeighbours(int i, int j, int id, int res){
 	if(id == 1){ //id == 1 -> init
-		if(init[i+1][j] == 0)
+		if(init[i+1][j] == res)
 			return true;
-		else if(init[i-1][j] == 0)
+		else if(init[i-1][j] == res)
 			return true;
-		else if(init[i][j+1] == 0)
+		else if(init[i][j+1] == res)
 			return true;
-		else if(init[i][j-1] == 0)
+		else if(init[i][j-1] == res)
 			return true;
 	}
 	else if(id == 2){ //id == 2 -> label
-		if(label[i+1][j] == 0)
+		if(label[i+1][j] == res)
 			return true;
-		else if(label[i-1][j] == 0)
+		else if(label[i-1][j] == res)
 			return true;
-		else if(label[i][j+1] == 0)
+		else if(label[i][j+1] == res)
 			return true;
-		else if(label[i][j-1] == 0)
+		else if(label[i][j-1] == res)
 			return true;
 	}
 	return false;
@@ -135,7 +135,7 @@ void initialization(){
 	}
 	for (int i = 1; i<HEIGHT+1; i++){
 		for (int j = 1; j<WIDTH+1; j++){
-			if(init[i][j] == 1 && checkMaskNeighbours(i,j,1) == true)
+			if(init[i][j] == 1 && checkMaskNeighbours(i, j, 1, 0) == true)
 				lz.push_back(i);		//adder i til vektoren som representerer zero level set
 				lz.push_back(j);		//adder j på samme måte som i. i ligger på partall indekser mens j sitter på oddetall
 				label[i][j] = 0;
@@ -143,13 +143,13 @@ void initialization(){
 
 		}
 	}
-	for (size_t i = 0; i<lz.size(); i+=2){
+	for (int i = 0; i<lz.size(); i+=2){
 		setLevels(lz[i], lz[i+1], 1);	//second levelSet (level 1)
 	}
-	for (size_t i = 0; i<lp1.size(); i+=2){
+	for (int i = 0; i<lp1.size(); i+=2){
 		setLevels(lp1[i], lp1[i+1], 2);	
 	}
-	for (size_t i = 0; i<ln1.size(); i+=2){
+	for (int i = 0; i<ln1.size(); i+=2){
 		setLevels(ln1[i], ln1[i+1], 2);	
 	}
 }
@@ -191,11 +191,10 @@ void readbmp(char* filename){
 
 int main(){
 	
-	updateLevelSets();
 
 	
 	try{
-		fillInit(350, 350, 360, 360);
+		fillInit(2, 2, 3, 3);
 	
 	}catch(int e){
 		if(e == -1){
@@ -208,6 +207,10 @@ int main(){
 				system("pause");
 		}
 	}
+	initialization();
 
+	prepareUpdates();
+	updateLevelSets();
+	system("pause");
 
 }

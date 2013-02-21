@@ -1,9 +1,10 @@
 #include <vector>
+#include <string>
 using namespace std;
 
 
-#define HEIGHT 512
-#define WIDTH 512
+#define HEIGHT 5
+#define WIDTH 5
 #define BORDER 2
 
-bool checkMaskNeighbours(int i, int j, int id);
+bool checkMaskNeighbours(int i, int j, int id, int res);
